@@ -1,0 +1,95 @@
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<!-- 动态日志级别 -->
+	<jmxConfigurator />
+	<property name="log_dir" value="logs" />
+	<property name="maxHistory" value="30" />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				<!-- 设置日志输出格式 -->
+				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 数字字母验证码相关日志 -->
+	<appender name="num_letter" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/num_letter/%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 成语相关日志 -->
+	<appender name="idiom" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/idiom/%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 标注日志输出 -->
+	<appender name="root" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/root/%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- ROOT日志输出 -->
+	<appender name="root" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log_dir}/root/%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- root级别 DEBUG -->
+	<root>
+		<!-- 打印INFO级别日志及以上级别日志 -->
+		<level value="INFO" />
+		<!-- 控制台输出 -->
+		<appender-ref ref="console" />
+		<!-- 文件输出 -->
+		<appender-ref ref="root" />
+	</root>
+</configuration>
