@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import ala.vcode.AVCode;
 import ala.vcode.App;
+import ala.vcode.conf.AConfItem;
 
 /**
  *	成语验证码	
@@ -154,18 +155,8 @@ public class VCodeIdiom extends AVCode {
 	}
 
 	@Override
-	protected String dir() {
-		return App.CONF.getIdiom().getOut();
-	}
-
-	@Override
-	protected int count() {
-		return App.CONF.getIdiom().getCount();
-	}
-
-	@Override
-	protected String annotation() {
-		return App.CONF.getIdiom().getAnnotation();
+	protected AConfItem conf() {
+		return App.CONF.getIdiom();
 	}
 
 

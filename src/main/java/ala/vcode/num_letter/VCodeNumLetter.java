@@ -5,12 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ala.vcode.AVCode;
 import ala.vcode.App;
+import ala.vcode.conf.AConfItem;
 
 /**
  *	图片数字验证码	
@@ -29,10 +31,13 @@ public class VCodeNumLetter extends AVCode {
 
 	
 	@Override
-	protected CreateImageResult createImage(String title) {
+	protected CreateImageResult createImage(String fileName) {
+		//	随机生成验证码
+		String vcode = randomVCode();
+		
 		//	高度都是180，每个字符给120的宽度
 		int h = 180;
-		int w = 120 * title.length();
+		int w = 120 * vcode.length();
 		int w_code = 100;			//	实际每个字只有100的宽度
 		BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = image.createGraphics();
@@ -46,21 +51,22 @@ public class VCodeNumLetter extends AVCode {
 		drawInterferenceLine(App.CONF.getNum_letter().getNoise_line_num(), w, h, g2);
 		
 		//	追加标注信息json格式
-		//	标注格式：{title:'${title}', annos:[{key:'值', x:x, y:y, w:w, h:h}, {key:'值', x:x, y:y, w:w, h:h}...]}
+		//	标注格式：{fileName:'${fileName}', vcode='${vcode}', annos:[{key:'值', x:x, y:y, w:w, h:h}, {key:'值', x:x, y:y, w:w, h:h}...]}
 		AnnoInfo info = new AnnoInfo();
-		info.setTitle(title);
+		info.setFileName(fileName);
 		info.setAnnos(new ArrayList<Anno>());
+		info.setVcode(vcode);
 		
 		//	写验证码
 		int x = 20, y = h / 2;
 		Font font = new Font("Algerian", Font.ITALIC, w_code);
 		g2.setFont(font);
-		for (int i = 0 ; i < title.length() ; i++) {
-			String code = title.charAt(i) + "";
+		for (int i = 0 ; i < vcode.length() ; i++) {
+			String code = vcode.charAt(i) + "";
 			g2.setColor(randomColor());
 			int cx = x, cy = y + random.nextInt(h / 4);
-			//	设置旋转（暂时先不旋转，标注框会对不准。。。）
-//			g2.setTransform(transform(Math.PI / 6f, cx + w_code/2, cy - w_code/2));
+			//	设置旋转
+			g2.setTransform(transform(Math.PI / 6f, cx + w_code/2, cy - w_code/2));
 			g2.drawString(code, cx, cy);
 
 			//	特殊判断下，貌似标注框对不准
@@ -114,6 +120,13 @@ public class VCodeNumLetter extends AVCode {
 	
 	@Override
 	protected String createTitle() {
+		return UUID.randomUUID().toString();
+	}
+	
+	/**
+	 * 随机生成验证码
+	 */
+	protected String randomVCode() {
 		//	取验证码长度
 		int code_num = App.CONF.getNum_letter().getCode_num();
 		if (code_num < 4 || code_num > 6) {
@@ -130,19 +143,11 @@ public class VCodeNumLetter extends AVCode {
 		return sbuf.toString();
 	}
 
-	@Override
-	protected String dir() {
-		return App.CONF.getNum_letter().getOut();
-	}
 
 	@Override
-	protected int count() {
-		return App.CONF.getNum_letter().getCount();
+	protected AConfItem conf() {
+		return App.CONF.getNum_letter();
 	}
 
-	@Override
-	protected String annotation() {
-		return App.CONF.getNum_letter().getAnnotation();
-	}
 	
 }

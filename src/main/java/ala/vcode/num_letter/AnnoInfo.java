@@ -6,7 +6,7 @@ import ala.vcode.IAnno;
 
 /**
  *	标注信息	
- *		标注格式(Json)：{title:'${title}', annos:[{key:'值', x:x, y:y, w:w, h:h}, {key:'值', x:x, y:y, w:w, h:h}...]}
+ *		标注格式(Json)：{fileName:'${fileName}', vcode='{vcode}', annos:[{key:'值', x:x, y:y, w:w, h:h}, {key:'值', x:x, y:y, w:w, h:h}...]}
  *
  *	@Auther luoyi
  *	@Date	2020年12月9日
@@ -14,16 +14,25 @@ import ala.vcode.IAnno;
 public class AnnoInfo implements IAnno {
 
 	
+	//	文件名名
+	protected String fileName;
+	
 	//	验证码值
-	protected String title;
+	protected String vcode;
 	//	标注框
 	protected List<Anno> annos;
 	
-	public String getTitle() {
-		return title;
+	public String getFileName() {
+		return fileName;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getVcode() {
+		return vcode;
+	}
+	public void setVcode(String vcode) {
+		this.vcode = vcode;
 	}
 	public List<Anno> getAnnos() {
 		return annos;

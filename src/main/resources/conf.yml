@@ -1,12 +1,19 @@
 #   数字&字母验证码相关
 num_letter: 
-   enable: false
-   #   输出目录
-   out: /Users/irenebritney/Desktop/vcode/num_letter
-   #   标注信息
-   annotation: /Users/irenebritney/Desktop/vcode/annotation/num_letter.txt
-   #   生成验证码个数
-   count: 50
+   enable: true
+   #   python那边的from_generator数据集只能遍历一条拿一条，所以3个数据集最好分开存
+   #   训练集
+   out_train: /Users/irenebritney/Desktop/vcode/dataset/num_letter/train
+   count_train: 200000
+   label_train: /Users/irenebritney/Desktop/vcode/dataset/num_letter/train.txt
+   #   验证集
+   out_val: /Users/irenebritney/Desktop/vcode/dataset/num_letter/val
+   count_val: 10000
+   label_val: /Users/irenebritney/Desktop/vcode/dataset/num_letter/val.txt
+   #   测试集
+   out_test: /Users/irenebritney/Desktop/vcode/dataset/num_letter/test
+   count_test: 10000
+   label_test: /Users/irenebritney/Desktop/vcode/dataset/num_letter/test.txt
    #   干扰线个数（0 ~ 100，默认0）
    noise_line_num: 50
    #   噪点像素比例（0 ~ 1，默认0）
@@ -18,15 +25,36 @@ num_letter:
 #   成语验证码
 idiom:
    enable: false
-   out: /Users/irenebritney/Desktop/vcode/idiom
-   count: 50
-   annotation: /Users/irenebritney/Desktop/vcode/annotation/idiom.txt
+   #   python那边的from_generator数据集只能遍历一条拿一条，所以3个数据集最好分开存
+   #   训练集
+   out_train: /Users/irenebritney/Desktop/vcode/dataset/idiom/train
+   count_train: 200000
+   label_train: /Users/irenebritney/Desktop/vcode/dataset/idiom/train.txt
+   #   验证集
+   out_val: /Users/irenebritney/Desktop/vcode/dataset/idiom/val
+   count_val: 10000
+   label_val: /Users/irenebritney/Desktop/vcode/dataset/idiom/val.txt
+   #   测试集
+   out_test: /Users/irenebritney/Desktop/vcode/dataset/idiom/test
+   count_test: 10000
+   label_test: /Users/irenebritney/Desktop/vcode/dataset/idiom/test.txt
    
    
 #   手写字母识别
 letter:
-   enable: true
-   out: /Users/irenebritney/Desktop/vcode/letter_2
-   count: 200000
-   annotation: /Users/irenebritney/Desktop/vcode/annotation/letter_2.txt
+   enable: false
+   #   python那边的from_generator数据集只能遍历一条拿一条，所以3个数据集最好分开存
+   #   训练集
+   out_train: /Users/irenebritney/Desktop/vcode/dataset/letter/train
+   count_train: 200000
+   label_train: /Users/irenebritney/Desktop/vcode/dataset/letter/train.txt
+   #   验证集
+   out_val: /Users/irenebritney/Desktop/vcode/dataset/letter/val
+   count_val: 10000
+   label_val: /Users/irenebritney/Desktop/vcode/dataset/letter/val.txt
+   #   测试集
+   out_test: /Users/irenebritney/Desktop/vcode/dataset/letter/test
+   count_test: 10000
+   label_test: /Users/irenebritney/Desktop/vcode/dataset/letter/test.txt
+   
    

@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
 
+import ala.vcode.conf.AConfItem;
+
 
 /**
  * 验证码公共父类
@@ -43,13 +45,27 @@ public abstract class AVCode {
 	 * @throws VCodeException 
 	 */
 	public void createVCodeImage() throws Exception {
-		before();
+		//	取配置信息
+		AConfItem conf = conf();
 		
-		//	取要生成的验证码图片数量
-		int count = count();
-		
+		//	生成训练数据集
+		createVCodeImage(conf.getCount_train(), conf.getOut_train(), conf.getLabel_train());
+		//	生成验证集数据
+		createVCodeImage(conf.getCount_val(), conf.getOut_val(), conf.getLabel_val());
+		//	生成测试集数据
+		createVCodeImage(conf.getCount_test(), conf.getOut_test(), conf.getLabel_test());
+	}
+	/**
+	 * 生成图片
+	 * @param	count			要生成的文件数量
+	 * @param	dir				要生成的文件目录
+	 * @param	labelFilePath	要生成的标签文件完路径
+	 */
+	protected void createVCodeImage(int count, String dir, String labelFilePath) throws Exception  {
 		//	每1%条打印一次log
 		int log_unit = count / 100;
+		//	标签文件
+		BufferedWriter labelWriter = createLabelFile(labelFilePath);
 		
 		for (int i = 0 ; i < count ; i++) {
 			String title = createTitle();
@@ -57,48 +73,39 @@ public abstract class AVCode {
 			
 			try {
 				if (res.getImage() != null) {
-					createVCodeImage(res.getImage(), title);
+					createVCodeImage(res.getImage(), title, dir);
 					
 					if (res.getAnno() != null) {
-						annotationWriter.write(JSONObject.toJSONString(res.getAnno()) + "\r\n");
+						labelWriter.write(JSONObject.toJSONString(res.getAnno()) + "\r\n");
 					}
 				}
 				
-				logger.debug("create vcode image succ. file:" + dir() + "/" + title);
-				if (i % log_unit == 0) {
+				logger.debug("create vcode image succ. file:" + dir + "/" + title);
+				if (log_unit > 0 && i % log_unit == 0) {
 					logger.info("create vcode image:(" + i + "/" + count + ")");
 				}
 			} catch (VCodeException e) {
-				logger.warn("create vcode image faild. file:" + dir() + "/" + title, e);
+				logger.warn("create vcode image faild. file:" + dir + "/" + title, e);
 			} catch (IOException e) {
-				logger.warn("create vcode image faild. file:" + dir() + "/" + title, e);
+				logger.warn("create vcode image faild. file:" + dir + "/" + title, e);
 			}
 		}
 		
-		after();
+		labelWriter.close();
 	}
 	
 	
 	//	标注文件输出
-	protected BufferedWriter annotationWriter;
-	protected void before() throws IOException {
-		String annotation = annotation();
-		if (annotation == null) {return;}
-		
-		File annotationFile = new File(annotation);
+	protected BufferedWriter createLabelFile(String filePath) throws IOException {
+		File annotationFile = new File(filePath);
 		File dir = annotationFile.getParentFile();
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
-		annotationWriter = new BufferedWriter(new FileWriter(annotationFile));
+		BufferedWriter annotationWriter = new BufferedWriter(new FileWriter(annotationFile));
+		return annotationWriter;
 	}
 
-	protected void after() throws IOException {
-		if (annotationWriter != null) {
-			annotationWriter.close();
-		}
-	}
-	
 	
 	/**
 	 * 生成图像对象
@@ -109,17 +116,9 @@ public abstract class AVCode {
 	 */
 	protected abstract String createTitle();
 	/**
-	 * 取文件目录
+	 * 取配置项
 	 */
-	protected abstract String dir();
-	/**
-	 * 要生成的验证码数
-	 */
-	protected abstract int count();
-	/**
-	 * 取标注文件path
-	 */
-	protected abstract String annotation();
+	protected abstract AConfItem conf();
 
 	
 	/**
@@ -127,22 +126,23 @@ public abstract class AVCode {
 	 * 
 	 * @param image 	验证码图像
 	 * @param title		文件标题
+	 * @param dir		文件目录	
 	 * @throws VCodeException 
 	 * @throws IOException 
 	 */
-	protected void createVCodeImage(BufferedImage image, String title) throws VCodeException, IOException {
+	protected void createVCodeImage(BufferedImage image, String title, String dir) throws VCodeException, IOException {
 		if (App.CONF.getNum_letter() == null) {
 			throw new VCodeException("config item: 'num_letter' is null.");
 		}
 		
 		//	输出文件目录
-		String outDir = dir();
+		String outDir = dir;
 		if (outDir == null) {
 			throw new VCodeException("config item: 'num_letter.out' is null.");
 		}
-		File dir = new File(outDir);
-		if (!dir.exists()) {
-			dir.mkdirs();
+		File dirFile = new File(outDir);
+		if (!dirFile.exists()) {
+			dirFile.mkdirs();
 		}
 		//	输出文件完整路径
 		String filePath = outDir + "/" + title + ".png";

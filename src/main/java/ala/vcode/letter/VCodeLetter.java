@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import ala.vcode.AVCode;
 import ala.vcode.App;
+import ala.vcode.conf.AConfItem;
 
 /**
  *	单一字母
@@ -21,7 +22,7 @@ public class VCodeLetter extends AVCode {
 	
 	
 	//	字母表
-	static final String LETTERS = "abdefghijklmnqrtwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 
 	@Override
@@ -68,18 +69,9 @@ public class VCodeLetter extends AVCode {
 	}
 
 	@Override
-	protected String dir() {
-		return App.CONF.getLetter().getOut();
+	protected AConfItem conf() {
+		return App.CONF.getLetter();
 	}
 
-	@Override
-	protected int count() {
-		return App.CONF.getLetter().getCount();
-	}
-
-	@Override
-	protected String annotation() {
-		return App.CONF.getLetter().getAnnotation();
-	}
 
 }
