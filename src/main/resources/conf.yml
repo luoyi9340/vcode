@@ -1,19 +1,36 @@
+#   创建任务线程数
+thread_pool:
+   train_min: 10
+   train_max: 20
+   val_min: 5
+   val_max: 10
+   test_min: 5
+   test_max: 10
+   #   每隔多少ms查看一次当前剩余任务数
+   show_leftover: 10000
+
+
 #   数字&字母验证码相关
 num_letter: 
    enable: true
+   threadpool: true
    #   python那边的from_generator数据集只能遍历一条拿一条，所以3个数据集最好分开存
    #   训练集
    out_train: /Users/irenebritney/Desktop/vcode/dataset/num_letter/train
-   count_train: 200000
-   label_train: /Users/irenebritney/Desktop/vcode/dataset/num_letter/train.txt
+   count_train: 10000
+   label_train: /Users/irenebritney/Desktop/vcode/dataset/num_letter/train.jsons
+   #   每个文件多少条记录（以train.jsons0， train.jsons1区分， <0表示不切分）
+   label_train_everyfile: 1000
    #   验证集
    out_val: /Users/irenebritney/Desktop/vcode/dataset/num_letter/val
-   count_val: 10000
-   label_val: /Users/irenebritney/Desktop/vcode/dataset/num_letter/val.txt
+   count_val: 100
+   label_val: /Users/irenebritney/Desktop/vcode/dataset/num_letter/val.jsons
+   label_val_everyfile: -1
    #   测试集
    out_test: /Users/irenebritney/Desktop/vcode/dataset/num_letter/test
-   count_test: 10000
-   label_test: /Users/irenebritney/Desktop/vcode/dataset/num_letter/test.txt
+   count_test: 100
+   label_test: /Users/irenebritney/Desktop/vcode/dataset/num_letter/test.jsons
+   label_test_everyfile: -1
    #   干扰线个数（0 ~ 100，默认0）
    noise_line_num: 50
    #   噪点像素比例（0 ~ 1，默认0）
@@ -25,6 +42,7 @@ num_letter:
 #   成语验证码
 idiom:
    enable: false
+   threadpool: false
    #   python那边的from_generator数据集只能遍历一条拿一条，所以3个数据集最好分开存
    #   训练集
    out_train: /Users/irenebritney/Desktop/vcode/dataset/idiom/train
@@ -43,6 +61,7 @@ idiom:
 #   手写字母识别
 letter:
    enable: false
+   threadpool: false
    #   python那边的from_generator数据集只能遍历一条拿一条，所以3个数据集最好分开存
    #   训练集
    out_train: /Users/irenebritney/Desktop/vcode/dataset/letter/train

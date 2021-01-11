@@ -5,7 +5,7 @@
 
 	<groupId>ala</groupId>
 	<artifactId>vcode</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>vcode</name>
@@ -81,7 +81,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
+							<classpathPrefix>libs/</classpathPrefix>
 							<mainClass>ala.vcode.App</mainClass>
 						</manifest>
 						<manifestEntries>
@@ -103,7 +103,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

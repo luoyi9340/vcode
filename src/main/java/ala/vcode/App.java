@@ -38,6 +38,8 @@ public class App {
 		if (CONF.getIdiom() != null && CONF.getIdiom().isEnable()) {drawIdiom();}
 		//	如果存在绘制字母识别需求
 		if (CONF.getLetter() != null && CONF.getLetter().isEnable()) {drawLetter();}
+		
+		System.exit(0);
 	}
 	
 	

@@ -8,6 +8,10 @@ package ala.vcode.conf;
  *	@Date	2020年12月8日
  */
 public class Conf {
+	
+	
+	//	线程配置
+	protected ThreadPoolConf thread_pool;
 
 	//	数字字母配置项
 	protected NumLetter num_letter;
@@ -39,6 +43,13 @@ public class Conf {
 	public void setLetter(Letter letter) {
 		this.letter = letter;
 	}
-	
+
+	public ThreadPoolConf getThread_pool() {
+		return thread_pool;
+	}
+
+	public void setThread_pool(ThreadPoolConf thread_pool) {
+		this.thread_pool = thread_pool;
+	}
 	
 }
